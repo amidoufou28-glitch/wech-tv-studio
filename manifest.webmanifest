@@ -1,0 +1,8 @@
+{
+  "name": "Rédaction Actu",
+  "short_name": "Rédaction",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F4EFE6",
+  "theme_color": "#1B2A4A"
+}

@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rédaction Actu</title>
+<meta name="theme-color" content="#1B2A4A">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE6;
+    --navy: #1B2A4A;
+    --red: #E63946;
+    --white: #FFFFFF;
+    --muted: #5B6680;
+    --line: #D9D1C3;
+    --ok: #2A9D6F;
+    --font: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--cream); color: var(--navy); font-family: var(--font); padding: max(16px, env(safe-area-inset-top)) 16px 48px; }
+  main { max-width: 680px; margin: 0 auto; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .logo { width: 48px; height: 48px; border-radius: 50%; background: var(--red); color: var(--white); display: grid; place-items: center; font-weight: 700; font-size: 20px; border: 4px solid var(--navy); }
+  header h1 { margin: 0; font-size: 26px; line-height: 1; }
+  header .sub { font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  header .grow { flex: 1; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; background: var(--white); border: 3px solid var(--navy); font-size: 13px; font-weight: 700; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .dot.on { background: var(--ok); }
+  .dot.off { background: var(--red); }
+  .card { background: var(--white); border: 4px solid var(--navy); border-radius: 20px; padding: 16px; margin-bottom: 16px; box-shadow: 8px 8px 0 var(--navy); }
+  h2 { margin: 0 0 4px; font-size: 22px; }
+  .meta { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+  .topic { border: 3px solid var(--navy); border-radius: 16px; padding: 14px; margin-top: 12px; cursor: pointer; transition: transform .1s; background: var(--white); }
+  .topic:active { transform: scale(.99); }
+  .topic.picked { background: #FFF4E5; border-color: var(--red); }
+  .topline { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .rank { background: var(--navy); color: var(--white); font-weight: 700; border-radius: 99px; padding: 3px 10px; font-size: 13px; }
+  .stars { color: var(--red); font-size: 18px; letter-spacing: 1px; }
+  .views { font-weight: 700; font-size: 15px; }
+  .title { font-size: 19px; font-weight: 700; margin: 10px 0 6px; line-height: 1.25; }
+  .resume { font-size: 15px; line-height: 1.45; color: #2C3A5C; margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: var(--cream); border: 2px solid var(--line); }
+  .tag.red { background: var(--red); color: var(--white); border-color: var(--red); }
+  .more { margin-top: 10px; font-size: 14px; display: none; }
+  .topic.picked .more { display: block; }
+  .more ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+  .more a { color: var(--navy); }
+  button { font: inherit; font-weight: 700; font-size: 16px; border: 3px solid var(--navy); border-radius: 14px; padding: 12px 16px; cursor: pointer; background: var(--red); color: var(--white); box-shadow: 4px 4px 0 var(--navy); }
+  button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--navy); }
+  button.ghost { background: var(--white); color: var(--navy); }
+  button.wide { width: 100%; margin-top: 12px; }
+  button:disabled { opacity: .5; }
+  label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin: 12px 0 6px; text-transform: uppercase; }
+  input, textarea { width: 100%; font: inherit; font-size: 16px; color: var(--navy); background: var(--cream); border: 3px solid var(--navy); border-radius: 12px; padding: 11px 12px; }
+  textarea { min-height: 80px; }
+  .hint { font-size: 14px; color: var(--muted); line-height: 1.45; }
+  .hint a { color: var(--red); font-weight: 700; }
+  .msg { font-size: 14px; margin-top: 8px; color: var(--muted); }
+  .err { color: var(--red); }
+  .hidden { display: none !important; }
+  .ep { border-top: 2px solid var(--line); padding: 12px 0; }
+  .ep:first-child { border-top: 0; }
+  .ep-head { display: flex; justify-content: space-between; gap: 10px; cursor: pointer; font-weight: 700; }
+  .badge { font-size: 12px; padding: 4px 10px; border-radius: 99px; background: var(--cream); white-space: nowrap; }
+  .ep-body img { width: 100%; border-radius: 12px; border: 3px solid var(--navy); margin-top: 10px; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .actions button { flex: 1; min-width: 140px; }
+  .demo { background: var(--navy); color: var(--white); border-radius: 14px; padding: 10px 14px; font-size: 14px; margin-bottom: 16px; }
+  .demo a { color: #FFD3D6; font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="logo">?!</div>
+    <div class="grow">
+      <h1>Rédaction</h1>
+      <div class="sub" id="repoName">Sujets du jour</div>
+    </div>
+    <span class="chip" id="runner"><span class="dot"></span><span>Mac ?</span></span>
+  </header>
+
+  <div class="demo hidden" id="demo">Mode aperçu avec la veille d'exemple. <a href="#" id="demoSetup">Connecte ton dépôt</a> pour lancer de vraies vidéos.</div>
+
+  <section class="card">
+    <h2>Sujets du jour</h2>
+    <div class="meta" id="veilleMeta">Chargement…</div>
+    <div id="topics"></div>
+    <div id="pickBox" class="hidden">
+      <label for="note">Une consigne pour la vidéo ? (facultatif)</label>
+      <textarea id="note" placeholder="Ex. : insiste sur les horaires, ton plus léger, termine par une question."></textarea>
+      <button class="wide" id="go">Créer avec validation →</button>
+      <button class="wide ghost" id="goAuto">⚡ Créer et publier sur TikTok</button>
+      <p class="msg" id="goMsg"></p>
+    </div>
+    <button class="ghost wide" id="newVeille">🔄 Lancer une nouvelle veille</button>
+    <p class="msg" id="veilleMsg"></p>
+  </section>
+
+  <section class="card hidden" id="list">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Mes vidéos</h2>
+      <button class="ghost" id="refresh" style="padding:6px 12px">↻</button>
+    </div>
+    <div id="eps"></div>
+  </section>
+
+  <section class="card hidden" id="setup">
+    <h2>Connexion à ton dépôt</h2>
+    <p class="hint">La page lit et écrit dans ton dépôt GitHub avec un jeton personnel, limité à ce dépôt. Il reste enregistré dans ce navigateur uniquement (à refaire sur chaque appareil).</p>
+    <ol class="hint">
+      <li>Ouvre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → nouveau jeton (fine-grained)</a>.</li>
+      <li>Nom : « Rédaction ». Expiration : 90 jours.</li>
+      <li>Repository access : <b>Only select repositories</b> → ton dépôt de l'agent actu.</li>
+      <li>Permissions : <b>Actions</b> = Read and write · <b>Contents</b> = Read-only · <b>Issues</b> = Read and write · <b>Administration</b> = Read-only (pour voir si ton Mac est allumé).</li>
+      <li>Generate token, copie-le et colle-le ci-dessous.</li>
+    </ol>
+    <label for="token">Jeton GitHub</label>
+    <input id="token" type="password" placeholder="github_pat_…" autocomplete="off">
+    <label for="repo">Dépôt</label>
+    <input id="repo" placeholder="ton-pseudo/agent-actu">
+    <label for="branch">Branche</label>
+    <input id="branch" value="main">
+    <button class="wide" id="save">Enregistrer</button>
+    <p class="msg" id="setupMsg"></p>
+  </section>
+
+  <section class="card">
+    <h2>Sur ton téléphone</h2>
+    <p class="hint">Ajoute la page à l'écran d'accueil : Safari → Partager → « Sur l'écran d'accueil » ; Chrome → ⋮ → « Ajouter à l'écran d'accueil ». Pour être prévenu quand une veille ou une vidéo arrive, garde l'appli GitHub avec « Watch » activé sur le dépôt.</p>
+    <button class="ghost wide" id="openSetup">⚙️ Réglages</button>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const store = {
+  get: (k, d = '') => { try { return localStorage.getItem('redac.' + k) ?? d; } catch { return d; } },
+  set: (k, v) => { try { localStorage.setItem('redac.' + k, v); } catch {} },
+};
+let cfg = {token: store.get('token'), repo: store.get('repo'), branch: store.get('branch', 'main')};
+let veille = null;
+let picked = null;
+const connected = () => Boolean(cfg.token && cfg.repo);
+const show = (id, on) => $(id).classList.toggle('hidden', !on);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const fmt = (n) => n.toLocaleString('fr-FR');
+
+async function gh(path, opts = {}) {
+  const res = await fetch(`https://api.github.com/repos/${cfg.repo}${path}`, {
+    ...opts,
+    headers: {Authorization: `Bearer ${cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {})},
+  });
+  if (!res.ok) throw new Error(`${res.status} ${(await res.text()).slice(0, 160)}`);
+  return opts.raw ? res : res.status === 204 ? null : res.json();
+}
+
+// ---------- Sujets du jour ----------
+async function loadVeille() {
+  try {
+    if (connected()) {
+      const res = await gh(`/contents/veille/latest.json?ref=${encodeURIComponent(cfg.branch)}&t=${Date.now()}`, {raw: true, headers: {Accept: 'application/vnd.github.raw'}});
+      veille = await res.json();
+    } else {
+      veille = await (await fetch('demo.json')).json();
+    }
+  } catch (e) {
+    $('veilleMeta').innerHTML = `<span class="err">Veille introuvable : ${esc(e.message)}. Lance une nouvelle veille.</span>`;
+    return;
+  }
+  const d = new Date(veille.date);
+  $('veilleMeta').textContent = `Veille du ${d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})} à ${d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})} · ${veille.propositions.length} sujets · touche un titre pour le choisir`;
+  $('topics').innerHTML = veille.propositions.map((p, i) => {
+    const e = p.estimation;
+    const sources = p.articles.slice(0, 4).map((a) => `<li><a href="${esc(a.lien)}" target="_blank" rel="noopener">${esc(a.source)}</a> : ${esc(a.titre)}</li>`).join('');
+    return `<article class="topic" data-i="${i}">
+      <div class="topline"><span class="rank">#${i + 1}</span><span class="stars">${'★'.repeat(e.etoiles)}${'☆'.repeat(5 - e.etoiles)}</span></div>
+      <div class="title">${esc(p.titre_tiktok)}</div>
+      <p class="resume">${esc(p.resume)}</p>
+      <div class="tags"><span class="tag red">≈ ${fmt(e.vues_basse)} – ${fmt(e.vues_haute)} vues</span><span class="tag">${esc(p.categorie)}</span>${p.sensible ? '<span class="tag">⚠️ sujet sensible</span>' : ''}</div>
+      <div class="more">
+        <b>Accroche :</b> « ${esc(p.accroche)} »<br>
+        <b>Pourquoi ce potentiel :</b> ${esc(e.pourquoi.join(' · '))} · titre noté ${p.note_accroche}/10
+        <ul>${sources}</ul>
+      </div>
+    </article>`;
+  }).join('');
+  $('topics').onclick = (ev) => {
+    const el = ev.target.closest('.topic');
+    if (!el || ev.target.closest('a')) return;
+    document.querySelectorAll('.topic').forEach((t) => t.classList.toggle('picked', t === el));
+    picked = veille.propositions[Number(el.dataset.i)];
+    show('pickBox', true);
+    $('goMsg').textContent = '';
+    el.after($('pickBox'));
+  };
+}
+
+$('goAuto').onclick = () => create(true);
+$('go').onclick = () => create(false);
+async function create(auto) {
+  if (!picked) return;
+  if (!connected()) { $('goMsg').innerHTML = 'Mode aperçu : <a href="#" onclick="openSetup();return false">connecte ton dépôt</a> pour créer la vidéo.'; return; }
+  const note = $('note').value.trim();
+  const body = [auto ? '<!-- auto -->' : '', note, '```json\n' + JSON.stringify(picked, null, 2) + '\n```'].filter(Boolean).join('\n\n');
+  $('go').disabled = true;
+  $('goMsg').textContent = 'Envoi au Mac…';
+  try {
+    const issue = await gh('/issues', {method: 'POST', body: JSON.stringify({title: picked.titre_tiktok, body, labels: ['video']})});
+    $('goMsg').textContent = auto
+      ? `⚡ C'est parti (ticket #${issue.number}) : la vidéo sera publiée sur TikTok d'ici 5 à 10 minutes.`
+      : `✅ C'est parti (ticket #${issue.number}) : les images à valider arrivent dans « Mes vidéos » d'ici quelques minutes.`;
+    $('note').value = '';
+    loadEpisodes();
+  } catch (e) { $('goMsg').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+  $('go').disabled = false;
+}
+
+$('newVeille').onclick = async () => {
+  if (!connected()) { openSetup(); return; }
+  $('veilleMsg').textContent = 'Veille lancée sur ton Mac…';
+  try {
+    await gh('/actions/workflows/veille.yml/dispatches', {method: 'POST', body: JSON.stringify({ref: cfg.branch})});
+    $('veilleMsg').textContent = '🔄 Veille en cours : les nouveaux sujets arrivent d\'ici deux à cinq minutes (touche ↻ ou recharge la page).';
+  } catch (e) { $('veilleMsg').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+};
+
+// ---------- Mes vidéos ----------
+function badge(labels) {
+  const n = labels.map((l) => l.name);
+  if (n.includes('video-prete')) return '<span class="badge">🎬 Vidéo prête</span>';
+  if (n.includes('images-pretes')) return '<span class="badge">🖼️ À valider</span>';
+  return '<span class="badge">⏳ En cours</span>';
+}
+
+async function rawImage(path) {
+  const res = await gh(`/contents/${path}?ref=rendus`, {raw: true, headers: {Accept: 'application/vnd.github.raw'}});
+  return URL.createObjectURL(await res.blob());
+}
+
+async function openEpisode(issue, box) {
+  box.innerHTML = '<p class="msg">Chargement…</p>';
+  const comments = await gh(`/issues/${issue.number}/comments?per_page=100`);
+  const last = (kind) => [...comments].reverse().find((c) => c.body.includes(`<!-- actu:${kind}`));
+  const val = last('validation');
+  const vid = last('video');
+  const st = last('status');
+  let html = '';
+  if (st && (!val || new Date(st.created_at) > new Date(val.created_at))) html += `<p class="msg">${esc(st.body.replace(/<!--.*?-->/, '').trim())}</p>`;
+  let id = null;
+  if (val) {
+    id = val.body.match(/id=([a-z0-9-]+)/)[1];
+    html += `<img alt="Images à valider" data-path="${id}/validation/planche.png">`;
+    const script = val.body.match(/<details><summary>Script[\s\S]*?```\n([\s\S]*?)\n```/);
+    if (script) html += `<details><summary><b>Script de la voix off</b></summary><p class="hint" style="white-space:pre-wrap">${esc(script[1])}</p></details>`;
+  }
+  html += '<div class="actions">';
+  if (vid) html += `<button data-act="download" data-id="${id}">⬇️ Télécharger</button>`;
+  if (vid && issue.state === 'open') html += '<button data-act="publier">📲 Publier sur TikTok</button>';
+  if (val && issue.state === 'open') html += '<button data-act="ok">✅ Valider → vidéo</button><button class="ghost" data-act="retouche">✏️ Retoucher</button>';
+  html += '</div><div class="retouche hidden"><textarea placeholder="Ex. : raccourcis l\'intro, ajoute le prix exact"></textarea><button class="wide" data-act="send">Envoyer la retouche</button></div><p class="msg act-msg"></p>';
+  box.innerHTML = html;
+  for (const img of box.querySelectorAll('img[data-path]')) rawImage(img.dataset.path).then((u) => (img.src = u)).catch(() => (img.alt = 'Image indisponible'));
+  box.onclick = async (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const msg = box.querySelector('.act-msg');
+    try {
+      if (b.dataset.act === 'publier') {
+        await gh(`/issues/${issue.number}/comments`, {method: 'POST', body: JSON.stringify({body: 'publier'})});
+        msg.textContent = '📲 Publication sur TikTok lancée : elle apparaît sur ton profil d\'ici une à deux minutes.';
+      } else if (b.dataset.act === 'ok') {
+        await gh(`/issues/${issue.number}/comments`, {method: 'POST', body: JSON.stringify({body: 'ok'})});
+        msg.textContent = '✅ Validé : la vidéo est en cours de rendu sur ton Mac.';
+      } else if (b.dataset.act === 'retouche') {
+        box.querySelector('.retouche').classList.toggle('hidden');
+      } else if (b.dataset.act === 'send') {
+        const t = box.querySelector('.retouche textarea').value.trim(); if (!t) return;
+        await gh(`/issues/${issue.number}/comments`, {method: 'POST', body: JSON.stringify({body: t})});
+        msg.textContent = '✏️ Retouche envoyée : de nouvelles images arrivent.';
+      } else if (b.dataset.act === 'download') {
+        const rel = await gh(`/releases/tags/${b.dataset.id}`);
+        const asset = rel.assets.find((a) => a.name.endsWith('.mp4'));
+        try {
+          const res = await gh(`/releases/assets/${asset.id}`, {raw: true, headers: {Accept: 'application/octet-stream'}});
+          const a = document.createElement('a'); a.href = URL.createObjectURL(await res.blob()); a.download = asset.name; a.click();
+        } catch { window.open(rel.html_url, '_blank'); }
+      }
+    } catch (err) { msg.innerHTML = `<span class="err">${esc(err.message)}</span>`; }
+  };
+}
+
+async function loadEpisodes() {
+  if (!connected()) return;
+  try {
+    const issues = await gh('/issues?labels=video&state=all&per_page=15');
+    $('eps').innerHTML = issues.length ? issues.map((i) => `<div class="ep" data-n="${i.number}"><div class="ep-head"><span>${esc(i.title)}</span>${badge(i.labels)}</div><div class="ep-body hidden"></div></div>`).join('') : '<p class="hint">Aucune vidéo pour l\'instant : choisis un sujet ci-dessus.</p>';
+    $('eps').querySelectorAll('.ep').forEach((el) => {
+      const issue = issues.find((x) => x.number === Number(el.dataset.n));
+      el.querySelector('.ep-head').onclick = () => {
+        const body = el.querySelector('.ep-body');
+        if (body.classList.toggle('hidden') === false) openEpisode(issue, body);
+      };
+    });
+  } catch (e) { $('eps').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
+}
+$('refresh').onclick = () => { loadEpisodes(); loadVeille(); checkRunner(); };
+
+async function checkRunner() {
+  if (!connected()) return;
+  try {
+    const r = await gh('/actions/runners');
+    const on = (r.runners || []).some((x) => x.status === 'online');
+    $('runner').innerHTML = `<span class="dot ${on ? 'on' : 'off'}"></span><span>${on ? 'Mac allumé' : 'Mac éteint'}</span>`;
+  } catch { /* le jeton n'a peut-être pas le droit « Administration » */ }
+}
+
+// ---------- Réglages ----------
+function openSetup() {
+  $('token').value = cfg.token; $('repo').value = cfg.repo; $('branch').value = cfg.branch;
+  show('setup', true); $('setup').scrollIntoView({behavior: 'smooth'});
+}
+$('openSetup').onclick = openSetup;
+$('demoSetup').onclick = (e) => { e.preventDefault(); openSetup(); };
+$('save').onclick = async () => {
+  cfg = {token: $('token').value.trim(), repo: $('repo').value.trim().replace(/^https:\/\/github.com\//, ''), branch: $('branch').value.trim() || 'main'};
+  $('setupMsg').textContent = 'Vérification…';
+  try {
+    await gh('');
+    store.set('token', cfg.token); store.set('repo', cfg.repo); store.set('branch', cfg.branch);
+    $('setupMsg').textContent = '✅ Connecté.';
+    start();
+  } catch (e) { $('setupMsg').innerHTML = `<span class="err">Connexion impossible : ${esc(e.message)}</span>`; }
+};
+
+function start() {
+  show('demo', !connected());
+  show('list', connected());
+  if (connected()) $('repoName').textContent = cfg.repo;
+  loadVeille(); loadEpisodes(); checkRunner();
+}
+setInterval(() => { if (connected() && !document.hidden) checkRunner(); }, 30000);
+start();
+</script>
+</body>
+</html>
