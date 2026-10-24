@@ -83,7 +83,6 @@
       <h1>Rédaction</h1>
       <div class="sub" id="repoName">Sujets du jour</div>
     </div>
-    <span class="chip" id="runner"><span class="dot"></span><span>Mac ?</span></span>
   </header>
 
   <div class="demo hidden" id="demo">Mode aperçu avec la veille d'exemple. <a href="#" id="demoSetup">Connecte ton dépôt</a> pour lancer de vraies vidéos.</div>
@@ -117,8 +116,8 @@
     <ol class="hint">
       <li>Ouvre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → nouveau jeton (fine-grained)</a>.</li>
       <li>Nom : « Rédaction ». Expiration : 90 jours.</li>
-      <li>Repository access : <b>Only select repositories</b> → ton dépôt de l'agent actu.</li>
-      <li>Permissions : <b>Actions</b> = Read and write · <b>Contents</b> = Read-only · <b>Issues</b> = Read and write · <b>Administration</b> = Read-only (pour voir si ton Mac est allumé).</li>
+      <li>Repository access : <b>Only select repositories</b> → <b>agent-actu</b>.</li>
+      <li>Permissions : <b>Actions</b> = Read and write · <b>Contents</b> = Read-only · <b>Issues</b> = Read and write.</li>
       <li>Generate token, copie-le et colle-le ci-dessous.</li>
     </ol>
     <label for="token">Jeton GitHub</label>
@@ -309,16 +308,7 @@ async function loadEpisodes() {
     });
   } catch (e) { $('eps').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
 }
-$('refresh').onclick = () => { loadEpisodes(); loadVeille(); checkRunner(); };
-
-async function checkRunner() {
-  if (!connected()) return;
-  try {
-    const r = await gh('/actions/runners');
-    const on = (r.runners || []).some((x) => x.status === 'online');
-    $('runner').innerHTML = `<span class="dot ${on ? 'on' : 'off'}"></span><span>${on ? 'Mac allumé' : 'Mac éteint'}</span>`;
-  } catch { /* le jeton n'a peut-être pas le droit « Administration » */ }
-}
+$('refresh').onclick = () => { loadEpisodes(); loadVeille(); };
 
 // ---------- Réglages ----------
 function openSetup() {
@@ -342,9 +332,8 @@ function start() {
   show('demo', !connected());
   show('list', connected());
   if (connected()) $('repoName').textContent = cfg.repo;
-  loadVeille(); loadEpisodes(); checkRunner();
+  loadVeille(); loadEpisodes();
 }
-setInterval(() => { if (connected() && !document.hidden) checkRunner(); }, 30000);
 start();
 </script>
 </body>
