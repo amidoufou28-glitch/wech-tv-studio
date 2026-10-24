@@ -81,14 +81,14 @@
     <div class="logo">?!</div>
     <div class="grow">
       <h1>Histoires vraies</h1>
-      <div class="sub" id="repoName">Sujets du jour</div>
+      <div class="sub" id="repoName">Histoires du jour</div>
     </div>
   </header>
 
   <div class="demo hidden" id="demo">Mode aperçu avec la veille d'exemple. <a href="#" id="demoSetup">Connecte ton dépôt</a> pour lancer de vraies vidéos.</div>
 
   <section class="card">
-    <h2>Sujets du jour</h2>
+    <h2>Histoires du jour</h2>
     <div class="meta" id="veilleMeta">Chargement…</div>
     <div id="topics"></div>
     <div id="pickBox" class="hidden">
@@ -183,7 +183,7 @@ async function loadVeille() {
     return;
   }
   const d = new Date(veille.date);
-  $('veilleMeta').textContent = `Veille du ${d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})} à ${d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})} · ${veille.propositions.length} sujets · touche un titre pour le choisir`;
+  $('veilleMeta').textContent = `Veille du ${d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})} à ${d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})} · ${veille.propositions.length} histoires · touche un titre pour la choisir`;
   $('topics').innerHTML = veille.propositions.map((p, i) => {
     const e = p.estimation;
     const sources = p.articles.slice(0, 4).map((a) => `<li><a href="${esc(a.lien)}" target="_blank" rel="noopener">${esc(a.source)}</a> : ${esc(a.titre)}</li>`).join('');
@@ -235,7 +235,7 @@ $('newVeille').onclick = async () => {
   $('veilleMsg').textContent = 'Veille lancée…';
   try {
     await gh('/actions/workflows/veille.yml/dispatches', {method: 'POST', body: JSON.stringify({ref: cfg.branch})});
-    $('veilleMsg').textContent = '🔄 Veille en cours : les nouveaux sujets arrivent d\'ici deux à cinq minutes (touche ↻ ou recharge la page).';
+    $('veilleMsg').textContent = '🔄 Veille en cours : les nouvelles histoires arrivent d\'ici deux à cinq minutes (touche ↻ ou recharge la page).';
   } catch (e) { $('veilleMsg').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
 };
 
@@ -263,6 +263,36 @@ function videoBlob(id) {
   })());
 }
 
+// Kit de publication : légende + hashtags + crédits, commentaire à épingler, couverture, meilleur créneau
+async function kit(el, id) {
+  try {
+    const res = await gh(`/contents/videos/${id}/script.json?ref=${cfg.branch}`, {raw: true, headers: {Accept: 'application/vnd.github.raw'}});
+    const sc = await res.json();
+    const legende = [sc.legende || sc.titre, sc.credits].filter(Boolean).join('\n');
+    const question = (sc.scenes?.at(-1)?.question || '').toLowerCase().replace(/^./, (c) => c.toUpperCase());
+    el.innerHTML = `<div class="hint" style="margin-top:12px;background:var(--cream);border-radius:12px;padding:12px">
+      <b>📋 Kit de publication</b><br>
+      <b>Légende :</b> <span style="white-space:pre-wrap">${esc(legende)}</span><br>
+      <button class="ghost" data-copy="${esc(legende)}" style="margin:6px 0">Copier la légende</button><br>
+      ${question ? `<b>Commentaire à épingler :</b> « ${esc(question)} 👇 »<br><button class="ghost" data-copy="${esc(question + ' 👇')}" style="margin:6px 0">Copier le commentaire</button><br>` : ''}
+      <button class="ghost" data-cover="${id}" style="margin:6px 0">🖼️ Télécharger la couverture</button><br>
+      <b>Quand publier :</b> entre 18 h et 21 h (pic d'audience TikTok en France), choisis la couverture dans TikTok et épingle le commentaire juste après.
+    </div>`;
+    el.onclick = async (e) => {
+      const c = e.target.closest('[data-copy]');
+      if (c) { await navigator.clipboard.writeText(c.dataset.copy); c.textContent = '✅ Copié'; return; }
+      const v = e.target.closest('[data-cover]');
+      if (v) {
+        const rel = await gh(`/releases/tags/${id}`);
+        const asset = rel.assets.find((a) => a.name === 'couverture.png');
+        if (!asset) { v.textContent = 'Couverture indisponible'; return; }
+        const r = await gh(`/releases/assets/${asset.id}`, {raw: true, headers: {Accept: 'application/octet-stream'}});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(await r.blob()); a.download = `${id}-couverture.png`; a.click();
+      }
+    };
+  } catch { el.innerHTML = ''; }
+}
+
 async function openEpisode(issue, box) {
   box.innerHTML = '<p class="msg">Chargement…</p>';
   const comments = await gh(`/issues/${issue.number}/comments?per_page=100`);
@@ -279,7 +309,7 @@ async function openEpisode(issue, box) {
     const script = val.body.match(/<details><summary>Script[\s\S]*?```\n([\s\S]*?)\n```/);
     if (script) html += `<details><summary><b>Script de la voix off</b></summary><p class="hint" style="white-space:pre-wrap">${esc(script[1])}</p></details>`;
   }
-  if (vid) html += `<video controls playsinline data-id="${id}" style="width:100%;border-radius:12px;border:3px solid var(--navy);margin-top:10px;background:#000"></video>`;
+  if (vid) html += `<video controls playsinline data-id="${id}" style="width:100%;border-radius:12px;border:3px solid var(--navy);margin-top:10px;background:#000"></video><div class="kit" data-id="${id}"></div>`;
   html += '<div class="actions">';
   if (vid) html += `<button data-act="download" data-id="${id}">⬇️ Télécharger</button>`;
   if (vid && issue.state === 'open') html += '<button data-act="publier">📲 Publier sur TikTok</button>';
@@ -288,6 +318,7 @@ async function openEpisode(issue, box) {
   html += '</div><div class="retouche hidden"><textarea placeholder="Ex. : raccourcis l\'intro, ajoute le prix exact"></textarea><button class="wide" data-act="send">Envoyer la retouche</button></div><p class="msg act-msg"></p>';
   box.innerHTML = html;
   for (const img of box.querySelectorAll('img[data-path]')) rawImage(img.dataset.path).then((u) => (img.src = u)).catch(() => (img.alt = 'Image indisponible'));
+  for (const k of box.querySelectorAll('.kit[data-id]')) kit(k, k.dataset.id);
   for (const v of box.querySelectorAll('video[data-id]')) videoBlob(v.dataset.id).then((b) => (v.src = b.url)).catch(() => v.replaceWith(Object.assign(document.createElement('p'), {className: 'msg', textContent: 'Aperçu indisponible : utilise « Télécharger ».'})));
   box.onclick = async (e) => {
     const b = e.target.closest('button'); if (!b) return;
@@ -319,7 +350,7 @@ async function loadEpisodes() {
   if (!connected()) return;
   try {
     const issues = await gh('/issues?labels=video&state=all&per_page=15');
-    $('eps').innerHTML = issues.length ? issues.map((i) => `<div class="ep" data-n="${i.number}"><div class="ep-head"><span>${esc(i.title)}</span>${badge(i.labels)}</div><div class="ep-body hidden"></div></div>`).join('') : '<p class="hint">Aucune vidéo pour l\'instant : choisis un sujet ci-dessus.</p>';
+    $('eps').innerHTML = issues.length ? issues.map((i) => `<div class="ep" data-n="${i.number}"><div class="ep-head"><span>${esc(i.title)}</span>${badge(i.labels)}</div><div class="ep-body hidden"></div></div>`).join('') : '<p class="hint">Aucune vidéo pour l\'instant : choisis une histoire ci-dessus.</p>';
     $('eps').querySelectorAll('.ep').forEach((el) => {
       const issue = issues.find((x) => x.number === Number(el.dataset.n));
       el.querySelector('.ep-head').onclick = () => {
