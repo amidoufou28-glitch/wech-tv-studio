@@ -102,6 +102,15 @@
     <p class="msg" id="veilleMsg"></p>
   </section>
 
+  <section class="card hidden" id="autoCard">
+    <h2>⚡ Mode automatique</h2>
+    <p class="hint">Activé, l'agent choisit lui-même les meilleures histoires après chaque veille, fabrique les vidéos et les publie sur TikTok. Chaque vidéo reste visible et téléchargeable dans « Mes vidéos ».</p>
+    <label for="parJour">Vidéos par jour</label>
+    <input id="parJour" type="number" min="1" max="10" value="3">
+    <button class="wide" id="autoToggle">…</button>
+    <p class="msg" id="autoMsg"></p>
+  </section>
+
   <section class="card hidden" id="list">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h2>Mes vidéos</h2>
@@ -209,7 +218,7 @@ async function create(auto) {
   const note = $('note').value.trim();
   const body = [auto ? '<!-- auto -->' : '', note, '```json\n' + JSON.stringify(picked, null, 2) + '\n```'].filter(Boolean).join('\n\n');
   $('go').disabled = true;
-  $('goMsg').textContent = 'Envoi au Mac…';
+  $('goMsg').textContent = 'Envoi à l\'agent…';
   try {
     const issue = await gh('/issues', {method: 'POST', body: JSON.stringify({title: picked.titre_tiktok, body, labels: ['video']})});
     $('goMsg').textContent = auto
@@ -223,7 +232,7 @@ async function create(auto) {
 
 $('newVeille').onclick = async () => {
   if (!connected()) { openSetup(); return; }
-  $('veilleMsg').textContent = 'Veille lancée sur ton Mac…';
+  $('veilleMsg').textContent = 'Veille lancée…';
   try {
     await gh('/actions/workflows/veille.yml/dispatches', {method: 'POST', body: JSON.stringify({ref: cfg.branch})});
     $('veilleMsg').textContent = '🔄 Veille en cours : les nouveaux sujets arrivent d\'ici deux à cinq minutes (touche ↻ ou recharge la page).';
@@ -243,6 +252,17 @@ async function rawImage(path) {
   return URL.createObjectURL(await res.blob());
 }
 
+// La vidéo est dans une Release du dépôt privé : on la récupère avec le jeton, une seule fois
+const videos = {};
+function videoBlob(id) {
+  return (videos[id] ||= (async () => {
+    const rel = await gh(`/releases/tags/${id}`);
+    const asset = rel.assets.find((a) => a.name.endsWith('.mp4'));
+    const res = await gh(`/releases/assets/${asset.id}`, {raw: true, headers: {Accept: 'application/octet-stream'}});
+    return {url: URL.createObjectURL(await res.blob()), name: asset.name};
+  })());
+}
+
 async function openEpisode(issue, box) {
   box.innerHTML = '<p class="msg">Chargement…</p>';
   const comments = await gh(`/issues/${issue.number}/comments?per_page=100`);
@@ -259,13 +279,16 @@ async function openEpisode(issue, box) {
     const script = val.body.match(/<details><summary>Script[\s\S]*?```\n([\s\S]*?)\n```/);
     if (script) html += `<details><summary><b>Script de la voix off</b></summary><p class="hint" style="white-space:pre-wrap">${esc(script[1])}</p></details>`;
   }
+  if (vid) html += `<video controls playsinline data-id="${id}" style="width:100%;border-radius:12px;border:3px solid var(--navy);margin-top:10px;background:#000"></video>`;
   html += '<div class="actions">';
   if (vid) html += `<button data-act="download" data-id="${id}">⬇️ Télécharger</button>`;
   if (vid && issue.state === 'open') html += '<button data-act="publier">📲 Publier sur TikTok</button>';
-  if (val && issue.state === 'open') html += '<button data-act="ok">✅ Valider → vidéo</button><button class="ghost" data-act="retouche">✏️ Retoucher</button>';
+  if (val && !vid && issue.state === 'open') html += '<button data-act="ok">✅ Valider → vidéo</button>';
+  if (val && issue.state === 'open') html += '<button class="ghost" data-act="retouche">✏️ Retoucher</button>';
   html += '</div><div class="retouche hidden"><textarea placeholder="Ex. : raccourcis l\'intro, ajoute le prix exact"></textarea><button class="wide" data-act="send">Envoyer la retouche</button></div><p class="msg act-msg"></p>';
   box.innerHTML = html;
   for (const img of box.querySelectorAll('img[data-path]')) rawImage(img.dataset.path).then((u) => (img.src = u)).catch(() => (img.alt = 'Image indisponible'));
+  for (const v of box.querySelectorAll('video[data-id]')) videoBlob(v.dataset.id).then((b) => (v.src = b.url)).catch(() => v.replaceWith(Object.assign(document.createElement('p'), {className: 'msg', textContent: 'Aperçu indisponible : utilise « Télécharger ».'})));
   box.onclick = async (e) => {
     const b = e.target.closest('button'); if (!b) return;
     const msg = box.querySelector('.act-msg');
@@ -275,7 +298,7 @@ async function openEpisode(issue, box) {
         msg.textContent = '📲 Publication sur TikTok lancée : elle apparaît sur ton profil d\'ici une à deux minutes.';
       } else if (b.dataset.act === 'ok') {
         await gh(`/issues/${issue.number}/comments`, {method: 'POST', body: JSON.stringify({body: 'ok'})});
-        msg.textContent = '✅ Validé : la vidéo est en cours de rendu sur ton Mac.';
+        msg.textContent = '✅ Validé : la vidéo est en cours de rendu (quelques minutes).';
       } else if (b.dataset.act === 'retouche') {
         box.querySelector('.retouche').classList.toggle('hidden');
       } else if (b.dataset.act === 'send') {
@@ -283,12 +306,10 @@ async function openEpisode(issue, box) {
         await gh(`/issues/${issue.number}/comments`, {method: 'POST', body: JSON.stringify({body: t})});
         msg.textContent = '✏️ Retouche envoyée : de nouvelles images arrivent.';
       } else if (b.dataset.act === 'download') {
-        const rel = await gh(`/releases/tags/${b.dataset.id}`);
-        const asset = rel.assets.find((a) => a.name.endsWith('.mp4'));
         try {
-          const res = await gh(`/releases/assets/${asset.id}`, {raw: true, headers: {Accept: 'application/octet-stream'}});
-          const a = document.createElement('a'); a.href = URL.createObjectURL(await res.blob()); a.download = asset.name; a.click();
-        } catch { window.open(rel.html_url, '_blank'); }
+          const v = await videoBlob(b.dataset.id);
+          const a = document.createElement('a'); a.href = v.url; a.download = v.name; a.click();
+        } catch { window.open(`https://github.com/${cfg.repo}/releases/tag/${b.dataset.id}`, '_blank'); }
       }
     } catch (err) { msg.innerHTML = `<span class="err">${esc(err.message)}</span>`; }
   };
@@ -309,6 +330,29 @@ async function loadEpisodes() {
   } catch (e) { $('eps').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
 }
 $('refresh').onclick = () => { loadEpisodes(); loadVeille(); };
+
+// ---------- Mode automatique ----------
+let autoCfg = {actif: false, par_jour: 3};
+async function loadAuto() {
+  try {
+    const res = await gh(`/contents/config.json?ref=${cfg.branch}`, {raw: true, headers: {Accept: 'application/vnd.github.raw'}});
+    autoCfg = {...autoCfg, ...((await res.json()).auto || {})};
+  } catch {}
+  $('parJour').value = autoCfg.par_jour;
+  $('autoToggle').textContent = autoCfg.actif ? '⏸️ Désactiver le mode automatique (actif)' : '▶️ Activer le mode automatique';
+  $('autoToggle').className = autoCfg.actif ? 'wide ghost' : 'wide';
+}
+$('autoToggle').onclick = async () => {
+  const actif = !autoCfg.actif;
+  $('autoMsg').textContent = 'Enregistrement…';
+  try {
+    await gh('/actions/workflows/reglages.yml/dispatches', {method: 'POST', body: JSON.stringify({ref: cfg.branch, inputs: {actif: String(actif), par_jour: String($('parJour').value || 3)}})});
+    autoCfg.actif = actif;
+    $('autoToggle').textContent = actif ? '⏸️ Désactiver le mode automatique (actif)' : '▶️ Activer le mode automatique';
+    $('autoToggle').className = actif ? 'wide ghost' : 'wide';
+    $('autoMsg').textContent = actif ? `⚡ Activé : jusqu'à ${$('parJour').value} vidéos par jour, dès la prochaine veille (toutes les 2 h).` : '⏸️ Désactivé : l\'agent propose, tu choisis.';
+  } catch (e) { $('autoMsg').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+};
 
 // ---------- Réglages ----------
 function openSetup() {
@@ -331,6 +375,8 @@ $('save').onclick = async () => {
 function start() {
   show('demo', !connected());
   show('list', connected());
+  show('autoCard', connected());
+  if (connected()) loadAuto();
   if (connected()) $('repoName').textContent = cfg.repo;
   loadVeille(); loadEpisodes();
 }

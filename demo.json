@@ -1,0 +1,366 @@
+{
+  "date": "2026-10-24T16:31:08.819938+00:00",
+  "redacteur": "gemini",
+  "propositions": [
+    {
+      "id": "202610241631-3",
+      "titre_tiktok": "Un grain de popcorn a failli le tuer",
+      "resume": "Adam Martin a tenté de déloger le maïs avec un clou, provoquant une infection sanguine mortelle appelée endocardite. Les chirurgiens ont dû l'opérer pendant 7 heures pour sauver son cœur ravagé par les bactéries.",
+      "accroche": "Un simple grain de popcorn coincé dans ses dents l'a conduit à une opération à cœur ouvert.",
+      "categorie": "insolite",
+      "note_accroche": 9,
+      "personnage": "Adam Martin",
+      "parties": 1,
+      "sensible": true,
+      "titre_source": "a man was diagnosed with endocarditis and suffered heart damage, leading to a 7-hour open-heart surgery due to an infection caused after he unsuccessfully tried to remove a stuck piece of popcorn from his mouth with a pe",
+      "estimation": {
+        "vues_mediane": 1100,
+        "vues_basse": 400,
+        "vues_haute": 4600,
+        "etoiles": 3,
+        "pourquoi": [
+          "catégorie insolite",
+          "fait insolite n°9 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "a man was diagnosed with endocarditis and suffered heart damage, leading to a 7-hour open-heart surgery due to an infection caused after he unsuccessfully tried to remove a stuck piece of popcorn from his mouth with a pe",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1xcuys4/til_a_man_was_diagnosed_with_endocarditis_and/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-2",
+      "titre_tiktok": "Le secret caché au sommet de la Tour Eiffel",
+      "resume": "Tout en haut de la tour, il s'est aménagé un appartement privé luxueux avec piano et meubles en velours. Il a refusé des sommes colossales de l'élite parisienne qui voulait y passer une seule nuit.",
+      "accroche": "Gustave Eiffel a construit le monument le plus célèbre du monde, mais il s'y est gardé un secret.",
+      "categorie": "histoire",
+      "note_accroche": 9,
+      "personnage": "Gustave Eiffel",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "when Gustave Eiffel built the Eiffel Tower in 1889, he reserved a small apartment for himself near the top. It had wallpaper, comfortable furniture, and even a piano. He turned down huge offers from Paris's elite to spen",
+      "estimation": {
+        "vues_mediane": 900,
+        "vues_basse": 310,
+        "vues_haute": 3600,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie histoire",
+          "fait insolite n°1 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "when Gustave Eiffel built the Eiffel Tower in 1889, he reserved a small apartment for himself near the top. It had wallpaper, comfortable furniture, and even a piano. He turned down huge offers from Paris's elite to spen",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1x9thkp/til_that_when_gustave_eiffel_built_the_eiffel/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-10",
+      "titre_tiktok": "L'arnaque aux diamants qui a dupé les milliardaires",
+      "resume": "En 1872, ils ont « salé » un terrain avec 20 000 $ de diamants achetés à crédit pour simuler une mine géante. Des magnats de la finance ont investi des millions avant de comprendre que tout était faux.",
+      "accroche": "Deux inconnus ont piégé les plus gros investisseurs du monde avec quelques pierres jetées dans le désert.",
+      "categorie": "argent",
+      "note_accroche": 8,
+      "personnage": "Arnold et Slack",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "in 1872, two conmen planted $20,000 worth of gemstones in Wyoming and fooled wealthy investors into believing they’d discovered a massive diamond field.",
+      "estimation": {
+        "vues_mediane": 890,
+        "vues_basse": 310,
+        "vues_haute": 3600,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie argent",
+          "fait insolite n°8 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "in 1872, two conmen planted $20,000 worth of gemstones in Wyoming and fooled wealthy investors into believing they’d discovered a massive diamond field.",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1xbxzqh/til_that_in_1872_two_conmen_planted_20000_worth/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-7",
+      "titre_tiktok": "Le secret que Spider-Man cachait aux studios",
+      "resume": "L'acteur est gravement claustrophobe, mais il ne l'a pas dit pour décrocher le rôle. Lors du moulage de son costume en plâtre, il a manqué d'oxygène et a frôlé la perte de connaissance totale.",
+      "accroche": "Tobey Maguire a failli s'évanouir sur le tournage de Spider-Man à cause d'une phobie cachée.",
+      "categorie": "cinema",
+      "note_accroche": 8,
+      "personnage": "Tobey Maguire",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "Tobey Maguire never told the producers of Spider-Man (2002) about his claustrophobia. He nearly blacked out during a plaster body cast, forcing the costume makers to alert the producers themselves. Maguire then took a pr",
+      "estimation": {
+        "vues_mediane": 830,
+        "vues_basse": 290,
+        "vues_haute": 3300,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie cinema",
+          "fait insolite n°2 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "Tobey Maguire never told the producers of Spider-Man (2002) about his claustrophobia. He nearly blacked out during a plaster body cast, forcing the costume makers to alert the producers themselves. Maguire then took a pr",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1xdi9o8/til_tobey_maguire_never_told_the_producers_of/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-4",
+      "titre_tiktok": "63 ans, un tonneau, et les chutes du Niagara",
+      "resume": "Ruinée, Annie Edson Taylor espérait la gloire et la fortune avec cet exploit suicidaire. Elle a survécu à la chute vertigineuse, mais elle a fini sa vie dans la misère totale, oubliée de tous.",
+      "accroche": "En 1901, une institutrice à la retraite a décidé de sauter les chutes du Niagara dans un tonneau.",
+      "categorie": "histoire",
+      "note_accroche": 8,
+      "personnage": "Annie Edson Taylor",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "Annie Edson Taylor",
+      "estimation": {
+        "vues_mediane": 800,
+        "vues_basse": 280,
+        "vues_haute": 3200,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie histoire",
+          "125 ans aujourd'hui"
+        ]
+      },
+      "signaux": {
+        "type": "anniversaire-evenement",
+        "vues": null,
+        "anniversaire_ans": 125,
+        "jours_avant": 0,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "Annie Edson Taylor : Annie Edson Taylor traverse les chutes du Niagara dans un tonneau.",
+          "source": "Wikipédia",
+          "lien": "https://fr.wikipedia.org/wiki/Annie_Edson_Taylor"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-6",
+      "titre_tiktok": "Frasier : le lion édenté devenu une légende",
+      "resume": "Arrivé dans un zoo à bout de forces, Frasier ne pouvait même plus mâcher. Contre toute attente, les lionnes du groupe l'ont adopté, nourri, et il est devenu le mâle alpha le plus prolifique.",
+      "accroche": "Ce lion vieux et mourant était destiné à finir seul, avant de devenir le père de 35 lionceaux.",
+      "categorie": "insolite",
+      "note_accroche": 8,
+      "personnage": "Frasier le Lion",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "Frasier the Lion was given to Lion Country Safari in his old age and very ill. The lionesses there took care of him even to chewing his food since he was toothless and holding him up to walk. He fathered 35 cubs with the",
+      "estimation": {
+        "vues_mediane": 760,
+        "vues_basse": 270,
+        "vues_haute": 3000,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie insolite",
+          "fait insolite n°11 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "Frasier the Lion was given to Lion Country Safari in his old age and very ill. The lionesses there took care of him even to chewing his food since he was toothless and holding him up to walk. He fathered 35 cubs with the",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1x94lcl/til_that_frasier_the_lion_was_given_to_lion/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-1",
+      "titre_tiktok": "L'assassinat accidentel du président Roosevelt ?",
+      "resume": "Pendant un exercice, l'équipage du USS William D. Porter a lancé une torpille réelle vers le cuirassé transportant Roosevelt. Le navire présidentiel a dû manœuvrer d'urgence pour éviter l'explosion de justesse.",
+      "accroche": "En 1943, un destroyer américain a accidentellement tiré une torpille sur le navire de son propre président.",
+      "categorie": "guerre",
+      "note_accroche": 10,
+      "personnage": "Franklin D. Roosevelt",
+      "parties": 1,
+      "sensible": true,
+      "titre_source": "in 1943, a U.S. Navy destroyer accidentally fired a live torpedo at the battleship carrying President Roosevelt. The USS Iowa managed to evade the torpedo, and the destroyer's crew initially tried to warn the battleship ",
+      "estimation": {
+        "vues_mediane": 750,
+        "vues_basse": 260,
+        "vues_haute": 3000,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie guerre",
+          "fait insolite n°18 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "in 1943, a U.S. Navy destroyer accidentally fired a live torpedo at the battleship carrying President Roosevelt. The USS Iowa managed to evade the torpedo, and the destroyer's crew initially tried to warn the battleship ",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1x8pc8u/til_that_in_1943_a_us_navy_destroyer_accidentally/"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-5",
+      "titre_tiktok": "Tycho Brahe : un nez en métal et une mort absurde",
+      "resume": "Tycho Brahe portait une prothèse en or après s'être battu pour une formule mathématique. Il est mort d'une infection de la vessie car il refusait de quitter la table royale avant son hôte.",
+      "accroche": "Cet astronome de génie a perdu son nez lors d'un duel et est mort par excès de politesse.",
+      "categorie": "science",
+      "note_accroche": 8,
+      "personnage": "Tycho Brahe",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "Tycho Brahe",
+      "estimation": {
+        "vues_mediane": 740,
+        "vues_basse": 260,
+        "vues_haute": 3000,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie science",
+          "425 ans aujourd'hui"
+        ]
+      },
+      "signaux": {
+        "type": "anniversaire-mort",
+        "vues": null,
+        "anniversaire_ans": 425,
+        "jours_avant": 0,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "Tycho Brahe : Tycho Brahe, astronome danois (° 14 décembre 1546).",
+          "source": "Wikipédia",
+          "lien": "https://fr.wikipedia.org/wiki/Tycho_Brahe"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-9",
+      "titre_tiktok": "Princesse le jour, commando d'élite la nuit",
+      "resume": "Élisabeth de Belgique a suivi une formation militaire ultra-stricte à l'École Royale Militaire. Les images d'archive la montrent ramper en treillis et porter des sacs de 20kg, loin du confort royal.",
+      "accroche": "Cette future reine d'Europe a troqué son diadème contre un fusil d'assaut et des nuits dans la boue.",
+      "categorie": "royaute",
+      "note_accroche": 7,
+      "personnage": "Élisabeth de Belgique",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "Élisabeth de Belgique",
+      "estimation": {
+        "vues_mediane": 670,
+        "vues_basse": 240,
+        "vues_haute": 2700,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie royaute",
+          "25 ans dans 1 j"
+        ]
+      },
+      "signaux": {
+        "type": "anniversaire-naissance",
+        "vues": null,
+        "anniversaire_ans": 25,
+        "jours_avant": 1,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "Élisabeth de Belgique : Élisabeth princesse de Belgique.",
+          "source": "Wikipédia",
+          "lien": "https://fr.wikipedia.org/wiki/%C3%89lisabeth_de_Belgique"
+        }
+      ]
+    },
+    {
+      "id": "202610241631-8",
+      "titre_tiktok": "Napoléon a financé ses ennemis par erreur",
+      "resume": "Pour financer son armée, Napoléon a cédé un immense territoire aux États-Unis. Le paradoxe est que le prêt américain a été financé par des banques londoniennes, aidant indirectement Napoléon à préparer leur invasion.",
+      "accroche": "L'Empereur a vendu la Louisiane pour envahir l'Angleterre, avec l'argent... des banquiers anglais.",
+      "categorie": "histoire",
+      "note_accroche": 7,
+      "personnage": "Napoléon Bonaparte",
+      "parties": 1,
+      "sensible": false,
+      "titre_source": "the 50 million Francs of the Louisiana purchase were used to finance preparations for a 200k man army to invade Great Britain. The United States had partly funded the purchase by a loan from Baring Brothers of London, wh",
+      "estimation": {
+        "vues_mediane": 480,
+        "vues_basse": 170,
+        "vues_haute": 1900,
+        "etoiles": 2,
+        "pourquoi": [
+          "catégorie histoire",
+          "fait insolite n°15 de la semaine sur Reddit"
+        ]
+      },
+      "signaux": {
+        "type": "insolite-til",
+        "vues": null,
+        "anniversaire_ans": null,
+        "jours_avant": null,
+        "recherches_google": 0
+      },
+      "articles": [
+        {
+          "titre": "the 50 million Francs of the Louisiana purchase were used to finance preparations for a 200k man army to invade Great Britain. The United States had partly funded the purchase by a loan from Baring Brothers of London, wh",
+          "source": "Reddit",
+          "lien": "https://www.reddit.com/r/todayilearned/comments/1xbs6tx/til_the_50_million_francs_of_the_louisiana/"
+        }
+      ]
+    }
+  ]
+}
