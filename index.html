@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rédaction Actu</title>
+<title>Histoires vraies</title>
 <meta name="theme-color" content="#1B2A4A">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -80,7 +80,7 @@
   <header>
     <div class="logo">?!</div>
     <div class="grow">
-      <h1>Rédaction</h1>
+      <h1>Histoires vraies</h1>
       <div class="sub" id="repoName">Sujets du jour</div>
     </div>
   </header>
@@ -182,7 +182,7 @@ async function loadVeille() {
       <div class="topline"><span class="rank">#${i + 1}</span><span class="stars">${'★'.repeat(e.etoiles)}${'☆'.repeat(5 - e.etoiles)}</span></div>
       <div class="title">${esc(p.titre_tiktok)}</div>
       <p class="resume">${esc(p.resume)}</p>
-      <div class="tags"><span class="tag red">≈ ${fmt(e.vues_basse)} – ${fmt(e.vues_haute)} vues</span><span class="tag">${esc(p.categorie)}</span>${p.sensible ? '<span class="tag">⚠️ sujet sensible</span>' : ''}</div>
+      <div class="tags"><span class="tag red">≈ ${fmt(e.vues_basse)} – ${fmt(e.vues_haute)} vues</span><span class="tag">${esc(p.categorie)}</span>${p.personnage ? `<span class="tag">${esc(p.personnage)}</span>` : ''}${p.parties == 2 ? '<span class="tag">📺 2 parties</span>' : ''}${p.sensible ? '<span class="tag">⚠️ sujet sensible</span>' : ''}</div>
       <div class="more">
         <b>Accroche :</b> « ${esc(p.accroche)} »<br>
         <b>Pourquoi ce potentiel :</b> ${esc(e.pourquoi.join(' · '))} · titre noté ${p.note_accroche}/10
